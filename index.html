@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Screenshots...etc</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: lightgray;
+      font-family: sans-serif;
+      overflow-x: hidden; /* 좌우 스크롤 제거 */
+      overflow-y: auto;
+    }
+
+    .canvas {
+      position: relative;
+      width: 100vw;       /* 좌우로 퍼지지 않게 */
+      height: 300vh;      /* 세로로만 퍼지게 */
+      padding: 20px;
+    }
+
+    .image-box {
+      position: absolute;
+      cursor: pointer;
+      background: white;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 0;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .image-box img {
+      width: auto;
+      height: auto;
+      max-width: 350px;
+      max-height: 500px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 16px;
+      z-index: 999;
+      max-width: 80vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      border-radius: 4px;
+    }
+
+    .popup img {
+      width: 100%;
+      max-height: 60vh;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+
+    .popup .meta {
+      font-size: 0.9rem;
+      margin-top: 10px;
+      color: #333;
+      white-space: pre-line;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.2);
+      z-index: 998;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas"></div>
+
+  <script>
+    const images = [
+      { src: 'https://i.postimg.cc/FFkH2rkb/1.jpg', desc: 'I cant remember, maybe after my graduation exhibition' },
+      { src: 'https://i.postimg.cc/XqCTNNTt/2.png', desc: 'exactly me' },
+      { src: 'https://i.postimg.cc/RVCkgCkR/9.jpg', desc: '' },
+      { src: 'https://i.postimg.cc/tCt7pHRP/13.jpg', desc: '' },
+      { src: 'https://i.postimg.cc/Z5mmY9sK/14.png', desc: '' },
+      { src: 'https://i.postimg.cc/yxqRkXSb/15.png', desc: '' },
+      { src: 'https://i.postimg.cc/ncmkY2KT/16.png', desc: '' },
+      { src: 'https://i.postimg.cc/dQSjrXzz/17.png', desc: '' },
+      { src: 'https://i.postimg.cc/8P9Vgg1m/IMG-8381.jpg', desc: 'The round sun, that crazy thing, came up again (That stupid round sun showed up again, guess we’re doing this mess one more time.)' },
+      { src: 'https://i.postimg.cc/yNkHM6Rj/IMG-8380.jpg', desc: '' },
+      { src: 'https://i.postimg.cc/vmQJyY6k/IMG-8382.jpg', desc: '' },
+      { src: 'https://i.postimg.cc/fyP3MBKF/IMG-8391.jpg', desc: '' },
+      { src: 'https://i.postimg.cc/QNc1D3Gk/IMG-8393.jpg', desc: '' },
+      { src: 'https://i.postimg.cc/R03P7QXT/20.png', desc: 'Ghosted 100 times, still got the flat 📦💅' },
+      { src: 'https://i.postimg.cc/52DWhmKX/IMG-4559.png', desc: '' },
+      { src: 'https://i.postimg.cc/Jn2CcVDd/IMG-8386.jpg', desc: '' }
+    ];
+
+    const canvas = document.querySelector('.canvas');
+
+    images.forEach(img => {
+      const div = document.createElement('div');
+      div.className = 'image-box';
+
+      const top = Math.random() * 270;
+      const left = Math.random() * 80;
+
+      const rotate = (Math.random() * 30) - 15;
+
+      div.style.top = `${top}vh`;
+      div.style.left = `${left}vw`;
+      div.style.transform = `rotate(${rotate}deg)`;
+
+      const image = document.createElement('img');
+      image.src = img.src;
+
+      div.appendChild(image);
+      canvas.appendChild(div);
+
+      div.addEventListener('click', () => {
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+
+        const popupImg = document.createElement('img');
+        popupImg.src = img.src;
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.innerHTML = img.desc || '(No description)';
+
+        popup.appendChild(popupImg);
+        popup.appendChild(meta);
+
+        overlay.addEventListener('click', () => {
+          document.body.removeChild(overlay);
+          document.body.removeChild(popup);
+        });
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
+      });
+    });
+  </script>
+</body>
+</html>
